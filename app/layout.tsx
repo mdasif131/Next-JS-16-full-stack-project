@@ -3,6 +3,7 @@ import { Geist, Geist_Mono } from "next/font/google";
 import { ThemeProvider } from "@/components/theme-provider";
 import { cn } from "@/lib/utils";
 import "./globals.css";
+import { ConvexClientProvider } from "@/components/web/ConvexClientProvider";
 
 const geist = Geist({subsets:['latin'],variable:'--font-sans'})
 
@@ -29,9 +30,8 @@ export default function RootLayout({
     >
       <body>
         <ThemeProvider>
-          <main className="max-w-7xl mx-auto w-full px-4 md:px-6 lg:px-8">
-            
-            {children}
+          <main className="mx-auto w-full max-w-7xl px-4 md:px-6 lg:px-8">
+            <ConvexClientProvider>{children}</ConvexClientProvider>
           </main>
         </ThemeProvider>
       </body>
