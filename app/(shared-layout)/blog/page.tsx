@@ -7,7 +7,9 @@ import Image from "next/image"
 import Link from "next/link"
 import { Suspense } from "react"
 export const dynamic = "force-static"
-export const revalidate = 30
+export const revalidate = 30 
+
+
 const BlogPage = () => {
   return (
     <div className="p-12">
@@ -29,13 +31,13 @@ const BlogPage = () => {
 export default BlogPage
 
 const LoadBlogPage = async () => {
-  await new Promise((resolve) => setTimeout(resolve, 2000))
+  await new Promise((resolve) => setTimeout(resolve, 1000))
   const data = await fetchQuery(api.posts.getPosts)
 
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {data?.map((post) => (
-        <Card key={post._id} className="pt-0">
+        <Card key={post._id} className="pt-0 drop-shadow-fuchsia-300 shadow-xl">
           <div className="relative h-48 w-full overflow-hidden">
             <Image
               src={

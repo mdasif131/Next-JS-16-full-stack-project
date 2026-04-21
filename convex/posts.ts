@@ -50,3 +50,20 @@ export const generateImageUploadUrl = mutation({
     return await ctx.storage.generateUploadUrl()
   },
 })
+
+export const getPostBuId = query({
+  args: {
+    postId: v.id("posts"),
+  },
+  handler: async (ctx, args) => {
+    const post = await ctx.db.get(args.postId)
+    const resolvedImageUrl = post?.imageStorageId ? await ctx.storage.getUrl(post.imageStorageId) : null;
+    if (!post) {
+      return null
+    }
+    return {
+      ...post,
+      imageUrl: resolvedImageUrl,
+    }
+  }
+})
