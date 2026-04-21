@@ -1,7 +1,9 @@
 import { buttonVariants } from "@/components/ui/button"
 import CommentSection from "@/components/web/CommentSection"
+import PostPresence from "@/components/web/PostPresence"
 import { api } from "@/convex/_generated/api"
 import { Id } from "@/convex/_generated/dataModel"
+import { getToken } from "@/lib/auth-server"
 import { fetchQuery, preloadQuery } from "convex/nextjs"
 import { ArrowLeft } from "lucide-react"
 import { Metadata } from "next"
@@ -13,9 +15,11 @@ interface PostIdRouteProps {
     postId: Id<"posts">
   }>
 }
-export async function generateMetadata({ params }: PostIdRouteProps):Promise<Metadata> {
+export async function generateMetadata({
+  params,
+}: PostIdRouteProps): Promise<Metadata> {
   const { postId } = await params
-  const post = await fetchQuery(api.posts.getPostBuId, { postId: postId });
+  const post = await fetchQuery(api.posts.getPostBuId, { postId: postId })
   if (!post) {
     return {
       title: "Post not found",
@@ -29,9 +33,11 @@ export async function generateMetadata({ params }: PostIdRouteProps):Promise<Met
 }
 const PostIdRoute = async ({ params }: PostIdRouteProps) => {
   const { postId } = await params
-  const [post, preloadedComments] = await Promise.all([
+  const token = await getToken();
+  const [post, preloadedComments, userId] = await Promise.all([
     await fetchQuery(api.posts.getPostBuId, { postId: postId }),
     await preloadQuery(api.comments.getCommentsByPostId, { postId }),
+    await fetchQuery(api.presence.getUserId, {}, {token}),
   ])
 
   if (!post) {
@@ -71,9 +77,13 @@ const PostIdRoute = async ({ params }: PostIdRouteProps) => {
         <h1 className="text-4xl font-bold tracking-tight text-foreground">
           {post.title}
         </h1>
-        <p>
-          Posted on: {new Date(post._creationTime).toLocaleDateString("en-US")}
-        </p>
+        <div className="flex items-center gap-2">
+          <p>
+            Posted on:{" "}
+            {new Date(post._creationTime).toLocaleDateString("en-US")}
+          </p>
+          {userId && <PostPresence roomId={post._id} userId={userId} />}
+        </div>
       </div>
       <hr className="my-8 border border-primary/30" />
       <p className="text-lg leading-relaxed whitespace-pre-wrap text-foreground/90">
