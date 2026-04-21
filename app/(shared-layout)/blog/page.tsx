@@ -3,13 +3,19 @@ import { Card, CardContent, CardFooter } from "@/components/ui/card"
 import { Skeleton } from "@/components/ui/skeleton"
 import { api } from "@/convex/_generated/api"
 import { fetchQuery } from "convex/nextjs"
+import { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
 import { Suspense } from "react"
 export const dynamic = "force-static"
-export const revalidate = 30 
+export const revalidate = 30
 
-
+export const metadata: Metadata = {
+  title: "X-deals Blog",
+  description: "Insights, thoughts, and trends form our team.",
+  category: "E-commerce blog",
+  authors: [{ name: "MD ASIF CHOWDHURY" }],
+}
 const BlogPage = () => {
   return (
     <div className="p-12">
@@ -37,7 +43,7 @@ const LoadBlogPage = async () => {
   return (
     <div className="grid gap-6 md:grid-cols-2 lg:grid-cols-3">
       {data?.map((post) => (
-        <Card key={post._id} className="pt-0 drop-shadow-fuchsia-300 shadow-xl">
+        <Card key={post._id} className="pt-0 shadow-xl drop-shadow-fuchsia-300">
           <div className="relative h-48 w-full overflow-hidden">
             <Image
               src={

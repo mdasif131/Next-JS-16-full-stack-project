@@ -13,7 +13,20 @@ interface PostIdRouteProps {
     postId: Id<"posts">
   }>
 }
-
+export async function generateMetadata({ params }: PostIdRouteProps):Promise<Metadata> {
+  const { postId } = await params
+  const post = await fetchQuery(api.posts.getPostBuId, { postId: postId });
+  if (!post) {
+    return {
+      title: "Post not found",
+    }
+  }
+  return {
+    title: post.title,
+    description: post.body,
+    authors: [{ name: "MD ASIF CHOWDHURY" }],
+  }
+}
 const PostIdRoute = async ({ params }: PostIdRouteProps) => {
   const { postId } = await params
   const [post, preloadedComments] = await Promise.all([
