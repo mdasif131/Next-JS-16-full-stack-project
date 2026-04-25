@@ -14,7 +14,7 @@ const nextConfig = {
         port: "",
       },
       {
-        hostname: "rosy-kiwi-630.convex.cloud",
+        hostname: "ardent-starling-199.convex.cloud",
         protocol: "https",
         port: "",
       },
