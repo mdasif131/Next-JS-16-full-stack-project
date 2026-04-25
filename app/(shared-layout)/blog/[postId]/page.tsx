@@ -76,7 +76,7 @@ const PostIdRoute = async ({ params }: PostIdRouteProps) => {
           }
           alt={post.title ?? "Best Tech Deals Under $100 Right Now"}
           fill
-          className="object-cover transition-transform duration-300 scale-95 hover:scale-105"
+          className="object-cover transition-transform duration-300  hover:scale-105"
         />
       </div>
 
