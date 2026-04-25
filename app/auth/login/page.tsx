@@ -7,6 +7,7 @@ import { Input } from "@/components/ui/input"
 import { authClient } from "@/lib/auth-client"
 import { zodResolver } from "@hookform/resolvers/zod"
 import { Loader2 } from "lucide-react"
+import Link from "next/link"
 import { useRouter } from "next/navigation"
 import { useTransition } from "react"
 import { Controller, useForm } from "react-hook-form"
@@ -91,11 +92,22 @@ const LoginPage = () => {
                   <Loader2 className="size-4 animate-spin" />
                   <span>Loading...</span>
                 </>
-              ):(<span>Login</span>)}
+              ) : (
+                <span>Login</span>
+              )}
             </Button>
           </FieldGroup>
         </form>
       </CardContent>
+      <p className="text-center text-sm text-gray-600">
+        Don't have an account?{" "}
+        <Link
+          href="/auth/sign-up"
+          className="font-medium text-primary hover:underline"
+        >
+          Sign up
+        </Link>
+      </p>
     </Card>
   )
 }
