@@ -9,6 +9,7 @@ import { ArrowLeft } from "lucide-react"
 import { Metadata } from "next"
 import Image from "next/image"
 import Link from "next/link"
+import { redirect } from "next/navigation"
 
 interface PostIdRouteProps {
   params: Promise<{
@@ -32,14 +33,17 @@ export async function generateMetadata({
   }
 }
 const PostIdRoute = async ({ params }: PostIdRouteProps) => {
+  
   const { postId } = await params
-  const token = await getToken();
+  const token = await getToken()
   const [post, preloadedComments, userId] = await Promise.all([
     await fetchQuery(api.posts.getPostBuId, { postId: postId }),
     await preloadQuery(api.comments.getCommentsByPostId, { postId }),
-    await fetchQuery(api.presence.getUserId, {}, {token}),
+    await fetchQuery(api.presence.getUserId, {}, { token }),
   ])
-
+  if (!userId) {
+    return redirect("/auth/login")
+  }
   if (!post) {
     return (
       <div className="mx-auto max-w-3xl px-4 py-8">
@@ -66,7 +70,10 @@ const PostIdRoute = async ({ params }: PostIdRouteProps) => {
 
       <div className="relative mb-8 h-100 w-full overflow-hidden rounded-xl shadow-sm">
         <Image
-          src={post.imageUrl ?? ""}
+          src={
+            post.imageUrl ??
+            "https://images.unsplash.com/photo-1601138412895-73ebdb2bd981?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDExNHx8fGVufDB8fHx8fA%3D%3D"
+          }
           alt={post.title ?? "image"}
           fill
           className="object-cover transition-transform duration-300 hover:scale-105"

@@ -5,7 +5,7 @@ import { fetchMutation } from "convex/nextjs"
 import { api } from "@/convex/_generated/api"
 import { redirect } from "next/navigation"
 import { getToken } from "@/lib/auth-server"
-import { revalidatePath } from "next/cache"
+import { revalidatePath, updateTag } from "next/cache"
 
 
 export default async function createBlogAction(
@@ -30,7 +30,7 @@ export default async function createBlogAction(
       },
       body: parsed.data.image,
     })
-    if (!uploadResult.ok) {
+    if (!uploadResult.ok ) {
       return {
         error: "Image upload failed",
       }
@@ -51,6 +51,6 @@ export default async function createBlogAction(
     }
   }
   
-  revalidatePath("/blog")
+  updateTag("blog")
   return redirect("/blog")
 }
