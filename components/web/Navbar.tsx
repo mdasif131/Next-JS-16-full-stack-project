@@ -6,6 +6,7 @@ import { useConvexAuth } from "convex/react"
 import { authClient } from "@/lib/auth-client"
 import { toast } from "sonner"
 import { useRouter } from "next/navigation"
+import SearchInput from "./SearchInput"
 
 export function Navbar() {
   const router = useRouter();
@@ -14,12 +15,12 @@ export function Navbar() {
     <nav className="flex w-full items-center justify-between py-5">
       <div className="flex items-center gap-8">
         <Link href={"/"}>
-          <h1 className="text-xl md:text-2xl lg:text-3xl font-bold">
+          <h1 className="text-lg sm:text-xl md:text-2xl lg:text-3xl font-bold">
             X-<span className="text-primary">Deals</span>
           </h1>
         </Link>
 
-        <div className="flex items-center gap-2">
+        <div className="flex items-center sm:gap-2 ">
           <Link className={buttonVariants({ variant: "ghost" })} href="/">
             Home
           </Link>
@@ -32,6 +33,9 @@ export function Navbar() {
         </div>
       </div>
       <div className="flex items-center gap-2">
+        <div className="hidden md:block mr-2">
+          <SearchInput />
+        </div>
         {isLoading ? null : isAuthenticated ? (
           <Button onClick={() => authClient.signOut({
             fetchOptions: {
@@ -43,6 +47,7 @@ export function Navbar() {
                 toast.error(err.error.message || "Failed to log out")
               }
             }
+
           })}>Logout</Button>
         ) : (
           <>
