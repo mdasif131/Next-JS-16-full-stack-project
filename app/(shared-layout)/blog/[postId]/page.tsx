@@ -75,7 +75,8 @@ const PostIdRoute = async ({ params }: PostIdRouteProps) => {
             "https://images.unsplash.com/photo-1601138412895-73ebdb2bd981?w=500&auto=format&fit=crop&q=60&ixlib=rb-4.1.0&ixid=M3wxMjA3fDB8MHxwaG90by1yZWxhdGVkfDExNHx8fGVufDB8fHx8fA%3D%3D%22"
           }
           alt={post.title ?? "Best Tech Deals Under $100 Right Now"}
-          fill
+          height={400}
+          width={500}
           className="object-cover transition-transform duration-300 hover:scale-105"
         />
       </div>
